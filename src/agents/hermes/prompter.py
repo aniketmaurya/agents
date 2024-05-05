@@ -3,8 +3,8 @@
 import datetime
 from pydantic import BaseModel
 from typing import Dict
-from schema import FunctionCall
-from utils import (
+from .schema import FunctionCall
+from .utils import (
     get_fewshot_examples
 )
 import yaml

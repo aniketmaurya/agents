@@ -11,6 +11,8 @@ import xml.etree.ElementTree as ET
 from art import text2art
 from logging.handlers import RotatingFileHandler
 
+from tqdm.auto import tqdm
+
 logging.basicConfig(
     format="%(asctime)s,%(msecs)03d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s",
     datefmt="%Y-%m-%d:%H:%M:%S",
@@ -92,6 +94,7 @@ def get_assistant_message(completion, chat_template, eos_token):
         return assistant_content
 
 def validate_and_extract_tool_calls(assistant_content):
+    inference_logger.info(f"assistant_content: {assistant_content}")
     validation_result = False
     tool_calls = []
     error_message = None
@@ -102,7 +105,9 @@ def validate_and_extract_tool_calls(assistant_content):
         root = ET.fromstring(xml_root_element)
 
         # extract JSON data
-        for element in root.findall(".//tool_call"):
+        root_all = root.findall(".//tool_call")
+        inference_logger.info(f"root_all: {root_all}")
+        for element in root_all:
             json_data = None
             try:
                 json_text = element.text.strip()

@@ -1,20 +1,18 @@
 # Credits NousResearch
 # https://github.com/NousResearch/Hermes-Function-Calling
 import argparse
-import torch
 import json
 
 from transformers import (
-    AutoModelForCausalLM,
-    AutoTokenizer,
-    BitsAndBytesConfig
+    AutoTokenizer
 )
+from llama_cpp import Llama
 
-import functions
-from prompter import PromptManager
-from validator import validate_function_call_schema
+from . import functions
+from .prompter import PromptManager
+from .validator import validate_function_call_schema
 
-from utils import (
+from .utils import (
     print_nous_text_art,
     inference_logger,
     get_assistant_message,
@@ -22,38 +20,24 @@ from utils import (
     validate_and_extract_tool_calls
 )
 
+
 class ModelInference:
-    def __init__(self, model_path, chat_template, load_in_4bit):
+    def __init__(self, chat_template="chatml"):
         inference_logger.info(print_nous_text_art())
         self.prompter = PromptManager()
-        self.bnb_config = None
+        self.model = Llama(model_path="/Users/aniket/weights/llama-cpp/Hermes-2-Pro-Llama-3-8B-Q4_K_M.gguf",
+                           n_gpu_layers=-1,
+                           n_ctx=4096,
+                           verbose=True)
 
-        if load_in_4bit == "True":
-            self.bnb_config = BitsAndBytesConfig(
-                load_in_4bit=True,
-                bnb_4bit_quant_type="nf4",
-                bnb_4bit_use_double_quant=True,
-            )
-        self.model = AutoModelForCausalLM.from_pretrained(
-            model_path,
-            trust_remote_code=True,
-            return_dict=True,
-            quantization_config=self.bnb_config,
-            torch_dtype=torch.float16,
-            attn_implementation="flash_attention_2",
-            device_map="auto",
-        )
-
-        self.tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
+        self.tokenizer = AutoTokenizer.from_pretrained('NousResearch/Hermes-2-Pro-Llama-3-8B', trust_remote_code=True)
         self.tokenizer.pad_token = self.tokenizer.eos_token
         self.tokenizer.padding_side = "left"
 
         if self.tokenizer.chat_template is None:
             print("No chat template defined, getting chat_template...")
             self.tokenizer.chat_template = get_chat_template(chat_template)
-        
-        inference_logger.info(self.model.config)
-        inference_logger.info(self.model.generation_config)
+
         inference_logger.info(self.tokenizer.special_tokens_map)
 
     def process_completion_and_validate(self, completion, chat_template):
@@ -72,7 +56,7 @@ class ModelInference:
         else:
             inference_logger.warning("Assistant message is None")
             raise ValueError("Assistant message is None")
-        
+
     def execute_function_call(self, tool_call):
         function_name = tool_call.get("name")
         function_to_call = getattr(functions, function_name, None)
@@ -82,23 +66,21 @@ class ModelInference:
         function_response = function_to_call(*function_args.values())
         results_dict = f'{{"name": "{function_name}", "content": {function_response}}}'
         return results_dict
-    
-    def run_inference(self, prompt):
+
+    def run_inference(self, prompt) -> str:
         inputs = self.tokenizer.apply_chat_template(
             prompt,
             add_generation_prompt=True,
-            return_tensors='pt'
+            tokenize=False
         )
-
-        tokens = self.model.generate(
-            inputs.to(self.model.device),
-            max_new_tokens=1500,
+        completions = self.model(
+            inputs,
+            max_tokens=2000,
             temperature=0.8,
-            repetition_penalty=1.1,
-            do_sample=True,
-            eos_token_id=self.tokenizer.eos_token_id
+            echo=True
         )
-        completion = self.tokenizer.decode(tokens[0], skip_special_tokens=False, clean_up_tokenization_space=True)
+        completion = completions["choices"][0]["text"]
+        inference_logger.info(f"completion:\n{completion}")
         return completion
 
     def generate_function_call(self, query, chat_template, num_fewshot, max_depth=5):
@@ -112,7 +94,8 @@ class ModelInference:
 
             def recursive_loop(prompt, completion, depth):
                 nonlocal max_depth
-                tool_calls, assistant_message, error_message = self.process_completion_and_validate(completion, chat_template)
+                tool_calls, assistant_message, error_message = self.process_completion_and_validate(completion,
+                                                                                                    chat_template)
                 prompt.append({"role": "assistant", "content": assistant_message})
 
                 tool_message = f"Agent iteration {depth} to assist with user query: {query}\n"
@@ -125,7 +108,8 @@ class ModelInference:
                             try:
                                 function_response = self.execute_function_call(tool_call)
                                 tool_message += f"<tool_response>\n{function_response}\n</tool_response>\n"
-                                inference_logger.info(f"Here's the response from the function call: {tool_call.get('name')}\n{function_response}")
+                                inference_logger.info(
+                                    f"Here's the response from the function call: {tool_call.get('name')}\n{function_response}")
                             except Exception as e:
                                 inference_logger.info(f"Could not execute function: {e}")
                                 tool_message += f"<tool_response>\nThere was an error when executing the function: {tool_call.get('name')}\nHere's the error traceback: {e}\nPlease call this function again with correct arguments within XML tags <tool_call></tool_call>\n</tool_response>\n"
@@ -162,6 +146,7 @@ class ModelInference:
             inference_logger.error(f"Exception occurred: {e}")
             raise e
 
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run recursive function calling loop")
     parser.add_argument("--model_path", type=str, help="Path to the model folder")
@@ -178,6 +163,6 @@ if __name__ == "__main__":
     else:
         model_path = 'NousResearch/Hermes-2-Pro-Llama-3-8B'
         inference = ModelInference(model_path, args.chat_template, args.load_in_4bit)
-        
+
     # Run the model evaluator
     inference.generate_function_call(args.query, args.chat_template, args.num_fewshot, args.max_depth)
