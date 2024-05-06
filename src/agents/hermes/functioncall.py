@@ -20,9 +20,9 @@ from .utils import (
 
 class ModelInference:
     def __init__(
-        self,
-        model_path="/Users/aniket/weights/llama-cpp/Hermes-2-Pro-Llama-3-8B-Q8_0.gguf",
-        chat_template="chatml",
+            self,
+            model_path="/Users/aniket/weights/llama-cpp/Hermes-2-Pro-Llama-3-8B-Q8_0.gguf",
+            chat_template="chatml",
     ):
         inference_logger.info(print_nous_text_art())
         self.chat_template = chat_template
@@ -84,14 +84,14 @@ class ModelInference:
         )
         inference_logger.info(f"inputs:\n{inputs}")
         print()
-        # completions = self.model.create_chat_completion(prompt, tools=tools, max_tokens=2000, temperature=0.5, )
-        completions = self.model(inputs, max_tokens=2000, temperature=0.5, echo=True)
+        # completions = self.model.create_chat_completion(prompt, max_tokens=2000, temperature=0.8, )
+        completions = self.model(inputs, max_tokens=2000, temperature=0.8, echo=False)
         # inference_logger.info(f"completions:\n{completions}")
 
         completion = "<tool_call>" + completions["choices"][0]["text"] + "</tool_call>"
-        # completion = completions["choices"][0]["message"]["content"]
+        # completion = "<tool_call>" + completions["choices"][0]["message"]["content"] + "</tool_call>"
         inference_logger.info(f"completion:\n{completion}")
-        return completion
+        return inputs + completion
 
     def generate_function_call(self, query, num_fewshot, max_depth=5):
         try:
