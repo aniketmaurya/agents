@@ -1,6 +1,5 @@
 # Credits NousResearch
 # https://github.com/NousResearch/Hermes-Function-Calling
-import argparse
 import json
 
 from transformers import AutoTokenizer
@@ -28,7 +27,7 @@ class ModelInference:
         inference_logger.info(print_nous_text_art())
         self.prompter = PromptManager()
         self.model = Llama(
-            model_path=model_path, n_gpu_layers=1, n_ctx=10000, verbose=False
+            model_path=model_path, n_gpu_layers=1, n_ctx=4096, verbose=False
         )
 
         self.tokenizer = AutoTokenizer.from_pretrained(
