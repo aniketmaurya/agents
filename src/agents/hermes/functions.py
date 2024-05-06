@@ -13,6 +13,8 @@ from langchain_community.tools import DuckDuckGoSearchRun
 from .utils import inference_logger
 from langchain.tools import tool
 from langchain_core.utils.function_calling import convert_to_openai_tool
+from langchain_community.tools import WikipediaQueryRun
+from langchain_community.utilities import WikipediaAPIWrapper
 
 
 @tool
@@ -338,6 +340,11 @@ def get_company_profile(symbol: str) -> dict:
         return {}
 
 
+duckduckgo_search = DuckDuckGoSearchRun()
+api_wrapper = WikipediaAPIWrapper(top_k_results=1)
+wikipedia = WikipediaQueryRun(api_wrapper=api_wrapper)
+
+
 def get_openai_tools() -> List[dict]:
     functions = [
         # code_interpreter,
@@ -351,7 +358,8 @@ def get_openai_tools() -> List[dict]:
         # get_analyst_recommendations,
         # get_dividend_data,
         # get_technical_indicators,
-        DuckDuckGoSearchRun()
+        # duckduckgo_search,
+        wikipedia
     ]
 
     tools = [convert_to_openai_tool(f) for f in functions]
