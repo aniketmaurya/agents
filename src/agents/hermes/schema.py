@@ -3,6 +3,7 @@
 from pydantic import BaseModel
 from typing import List, Dict, Literal, Optional
 
+
 class FunctionCall(BaseModel):
     arguments: dict
     """
@@ -15,10 +16,12 @@ class FunctionCall(BaseModel):
     name: str
     """The name of the function to call."""
 
+
 class FunctionDefinition(BaseModel):
     name: str
     description: Optional[str] = None
     parameters: Optional[Dict[str, object]] = None
+
 
 class FunctionSignature(BaseModel):
     function: FunctionDefinition
