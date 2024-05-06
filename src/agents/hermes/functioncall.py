@@ -85,7 +85,7 @@ class ModelInference:
         inference_logger.info(f"inputs:\n{inputs}")
         print()
         # completions = self.model.create_chat_completion(prompt, max_tokens=2000, temperature=0.8, )
-        completions = self.model(inputs, max_tokens=2000, temperature=0.8, echo=False)
+        completions = self.model(inputs, max_tokens=2000, temperature=0.3, echo=False)
         # inference_logger.info(f"completions:\n{completions}")
 
         completion = "<tool_call>" + completions["choices"][0]["text"] + "</tool_call>"
