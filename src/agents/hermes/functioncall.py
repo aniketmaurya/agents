@@ -79,11 +79,13 @@ class ModelInference:
         )
         inference_logger.info(f"inputs:\n{inputs}")
         print()
-        completions = self.model.create_chat_completion(prompt, tools=tools, max_tokens=2000, temperature=0.5, )
+        # completions = self.model.create_chat_completion(prompt, tools=tools, max_tokens=2000, temperature=0.5, )
+        completions = self.model(inputs, max_tokens=2000, temperature=0.5, echo=True)
         inference_logger.info(f"completions:\n{completions}")
-        # completion = completions["choices"][0]["text"]
-        completion = completions["choices"][0]["message"]["content"]
-        return inputs + completion
+
+        completion = completions["choices"][0]["text"]
+        # completion = completions["choices"][0]["message"]["content"]
+        return completion
 
     def generate_function_call(self, query, num_fewshot, max_depth=5):
         try:
