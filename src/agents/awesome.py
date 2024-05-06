@@ -1,9 +1,9 @@
 from hermes.functioncall import ModelInference
 
-model_inference = ModelInference()
+model_inference = ModelInference(chat_template="chatml")
 model_inference.generate_function_call(
-    "Who is the president of the USA? Search on google",
+    "I need the current stock price of Tesla (TSLA)",
     "chatml",
-    2,
-    10
+    None,
+    5
 )

@@ -22,13 +22,14 @@ from .utils import (
 
 
 class ModelInference:
-    def __init__(self, chat_template="chatml"):
+    def __init__(self, model_path="/Users/aniket/weights/llama-cpp/Hermes-2-Pro-Llama-3-8B-Q8_0.gguf",
+                 chat_template="chatml"):
         inference_logger.info(print_nous_text_art())
         self.prompter = PromptManager()
-        self.model = Llama(model_path="/Users/aniket/weights/llama-cpp/Hermes-2-Pro-Llama-3-8B-Q4_K_M.gguf",
-                           n_gpu_layers=-1,
+        self.model = Llama(model_path=model_path,
+                           n_gpu_layers=1,
                            n_ctx=4096,
-                           verbose=True)
+                           verbose=False)
 
         self.tokenizer = AutoTokenizer.from_pretrained('NousResearch/Hermes-2-Pro-Llama-3-8B', trust_remote_code=True)
         self.tokenizer.pad_token = self.tokenizer.eos_token
@@ -37,8 +38,6 @@ class ModelInference:
         if self.tokenizer.chat_template is None:
             print("No chat template defined, getting chat_template...")
             self.tokenizer.chat_template = get_chat_template(chat_template)
-
-        inference_logger.info(self.tokenizer.special_tokens_map)
 
     def process_completion_and_validate(self, completion, chat_template):
 
@@ -73,6 +72,8 @@ class ModelInference:
             add_generation_prompt=True,
             tokenize=False
         )
+        inference_logger.info(f"inputs:\n{inputs}")
+        print()
         completions = self.model(
             inputs,
             max_tokens=2000,

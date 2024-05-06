@@ -75,5 +75,3 @@ class PromptManager:
             ]
         prompt.extend(user_prompt)
         return prompt
-        
-        
