@@ -7,5 +7,5 @@ model_inference = ModelInference(
     model_path=model_path,
 )
 model_inference.generate_function_call(
-    "When was Golden gate bridge painted last?", None, 5
+    "When was Golden gate bridge painted last?", 2, 5
 )
