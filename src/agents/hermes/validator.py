@@ -108,7 +108,7 @@ def validate_json_data(json_object, json_schema):
             # If json.loads fails, try ast.literal_eval
             try:
                 result_json = ast.literal_eval(json_object)
-            except (SyntaxError, ValueError) as e:
+            except (SyntaxError, ValueError):
                 try:
                     result_json = extract_json_from_markdown(json_object)
                 except Exception as e:
@@ -130,10 +130,10 @@ def validate_json_data(json_object, json_schema):
                 try:
                     validate(instance=item, schema=json_schema)
                     inference_logger.info(
-                        f"Item {index+1} is valid against the schema."
+                        f"Item {index + 1} is valid against the schema."
                     )
                 except ValidationError as e:
-                    error_message = f"Validation failed for item {index+1}: {e}"
+                    error_message = f"Validation failed for item {index + 1}: {e}"
                     break
         else:
             # Default to validation without list

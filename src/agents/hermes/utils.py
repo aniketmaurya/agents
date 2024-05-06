@@ -48,9 +48,9 @@ def print_nous_text_art(suffix=None):
 
 
 def get_fewshot_examples(num_fewshot):
-    """return a list of few shot examples"""
+    """Return a list of few shot examples."""
     example_path = os.path.join(script_dir, "prompt_assets", "few_shot.json")
-    with open(example_path, "r") as file:
+    with open(example_path) as file:
         examples = json.load(
             file
         )  # Use json.load with the file object, not the file path
@@ -62,14 +62,14 @@ def get_fewshot_examples(num_fewshot):
 
 
 def get_chat_template(chat_template):
-    """read chat template from jinja file"""
+    """Read chat template from jinja file."""
     template_path = os.path.join(script_dir, "chat_templates", f"{chat_template}.j2")
 
     if not os.path.exists(template_path):
         inference_logger.error(f"Template file not found: {chat_template}")
         return None
     try:
-        with open(template_path, "r") as file:
+        with open(template_path) as file:
             template = file.read()
         return template
     except Exception as e:
@@ -78,7 +78,7 @@ def get_chat_template(chat_template):
 
 
 def get_assistant_message(completion, chat_template, eos_token):
-    """define and match pattern to find the assistant message"""
+    """Define and match pattern to find the assistant message."""
     completion = completion.strip()
 
     if chat_template == "zephyr":
@@ -164,8 +164,8 @@ def validate_and_extract_tool_calls(assistant_content):
 
 
 def extract_json_from_markdown(text):
-    """
-    Extracts the JSON string from the given text using a regular expression pattern.
+    """Extracts the JSON string from the given text using a regular expression
+    pattern.
 
     Args:
         text (str): The input text containing the JSON string.
