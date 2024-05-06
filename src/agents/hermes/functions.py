@@ -19,8 +19,7 @@ from langchain_community.utilities import WikipediaAPIWrapper
 
 @tool
 def code_interpreter(code_markdown: str) -> dict | str:
-    """
-    Execute the provided Python code string on the terminal using exec.
+    """Execute the provided Python code string on the terminal using exec.
 
     The string should contain valid, executable and pure Python code in markdown syntax.
     Code should also import any required Python packages.
@@ -73,9 +72,9 @@ def code_interpreter(code_markdown: str) -> dict | str:
 
 @tool
 def google_search_and_scrape(query: str) -> dict:
-    """
-    Performs a Google search for the given query, retrieves the top search result URLs,
-    and scrapes the text content and table data from those pages in parallel.
+    """Performs a Google search for the given query, retrieves the top search
+    result URLs, and scrapes the text content and table data from those pages
+    in parallel.
 
     Args:
         query (str): The search query.
@@ -98,7 +97,7 @@ def google_search_and_scrape(query: str) -> dict:
         result.find("a")["href"] for result in soup.find_all("div", class_="tF2Cxc")
     ]
 
-    inference_logger.info(f"Scraping text from urls, please wait...")
+    inference_logger.info("Scraping text from urls, please wait...")
     [inference_logger.info(url) for url in urls]
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
         futures = [
@@ -127,16 +126,17 @@ def google_search_and_scrape(query: str) -> dict:
                 for row in table.find_all("tr")
             ]
             if text_content or table_data:
-                results.append(
-                    {"url": url, "content": text_content, "tables": table_data}
-                )
+                results.append({
+                    "url": url,
+                    "content": text_content,
+                    "tables": table_data,
+                })
     return results
 
 
 @tool
 def get_current_stock_price(symbol: str) -> float:
-    """
-    Get the current stock price for a given symbol.
+    """Get the current stock price for a given symbol.
 
     Args:
       symbol (str): The stock symbol.
@@ -158,8 +158,7 @@ def get_current_stock_price(symbol: str) -> float:
 
 @tool
 def get_stock_fundamentals(symbol: str) -> dict:
-    """
-    Get fundamental data for a given stock symbol using yfinance API.
+    """Get fundamental data for a given stock symbol using yfinance API.
 
     Args:
         symbol (str): The stock symbol.
@@ -205,8 +204,7 @@ def get_stock_fundamentals(symbol: str) -> dict:
 
 @tool
 def get_financial_statements(symbol: str) -> dict:
-    """
-    Get financial statements for a given stock symbol.
+    """Get financial statements for a given stock symbol.
 
     Args:
     symbol (str): The stock symbol.
@@ -225,8 +223,7 @@ def get_financial_statements(symbol: str) -> dict:
 
 @tool
 def get_key_financial_ratios(symbol: str) -> dict:
-    """
-    Get key financial ratios for a given stock symbol.
+    """Get key financial ratios for a given stock symbol.
 
     Args:
     symbol (str): The stock symbol.
@@ -245,8 +242,7 @@ def get_key_financial_ratios(symbol: str) -> dict:
 
 @tool
 def get_analyst_recommendations(symbol: str) -> pd.DataFrame:
-    """
-    Get analyst recommendations for a given stock symbol.
+    """Get analyst recommendations for a given stock symbol.
 
     Args:
     symbol (str): The stock symbol.
@@ -265,8 +261,7 @@ def get_analyst_recommendations(symbol: str) -> pd.DataFrame:
 
 @tool
 def get_dividend_data(symbol: str) -> pd.DataFrame:
-    """
-    Get dividend data for a given stock symbol.
+    """Get dividend data for a given stock symbol.
 
     Args:
     symbol (str): The stock symbol.
@@ -285,8 +280,7 @@ def get_dividend_data(symbol: str) -> pd.DataFrame:
 
 @tool
 def get_company_news(symbol: str) -> pd.DataFrame:
-    """
-    Get company news and press releases for a given stock symbol.
+    """Get company news and press releases for a given stock symbol.
 
     Args:
     symbol (str): The stock symbol.
@@ -304,8 +298,7 @@ def get_company_news(symbol: str) -> pd.DataFrame:
 
 @tool
 def get_technical_indicators(symbol: str) -> pd.DataFrame:
-    """
-    Get technical indicators for a given stock symbol.
+    """Get technical indicators for a given stock symbol.
 
     Args:
     symbol (str): The stock symbol.
@@ -323,8 +316,7 @@ def get_technical_indicators(symbol: str) -> pd.DataFrame:
 
 @tool
 def get_company_profile(symbol: str) -> dict:
-    """
-    Get company profile and overview for a given stock symbol.
+    """Get company profile and overview for a given stock symbol.
 
     Args:
     symbol (str): The stock symbol.

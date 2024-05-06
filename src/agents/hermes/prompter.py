@@ -37,7 +37,7 @@ class PromptManager:
         return formatted_prompt
 
     def read_yaml_file(self, file_path: str) -> PromptSchema:
-        with open(file_path, "r") as file:
+        with open(file_path) as file:
             yaml_content = yaml.safe_load(file)
 
         prompt_schema = PromptSchema(
