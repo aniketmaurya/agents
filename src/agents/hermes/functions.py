@@ -9,7 +9,7 @@ import concurrent.futures
 
 from typing import List
 from bs4 import BeautifulSoup
-from langchain_community.tools import  DuckDuckGoSearchRun
+from langchain_community.tools import DuckDuckGoSearchRun
 from .utils import inference_logger
 from langchain.tools import tool
 from langchain_core.utils.function_calling import convert_to_openai_tool

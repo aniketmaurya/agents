@@ -124,7 +124,7 @@ def validate_and_extract_tool_calls(assistant_content):
         root = ET.fromstring(xml_root_element)
 
         # extract JSON data
-        root_all = root.findall(".//tool_calls")
+        root_all = root.findall(".//tool_call")
         inference_logger.info(f"root_all: {root_all}")
         for element in root_all:
             json_data = None
