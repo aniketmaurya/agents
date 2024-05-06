@@ -9,6 +9,7 @@ import concurrent.futures
 
 from typing import List
 from bs4 import BeautifulSoup
+from langchain_community.tools import  DuckDuckGoSearchRun
 from .utils import inference_logger
 from langchain.tools import tool
 from langchain_core.utils.function_calling import convert_to_openai_tool
@@ -339,17 +340,18 @@ def get_company_profile(symbol: str) -> dict:
 
 def get_openai_tools() -> List[dict]:
     functions = [
-        code_interpreter,
-        google_search_and_scrape,
-        get_current_stock_price,
-        get_company_news,
-        get_company_profile,
-        get_stock_fundamentals,
-        get_financial_statements,
-        get_key_financial_ratios,
-        get_analyst_recommendations,
-        get_dividend_data,
-        get_technical_indicators
+        # code_interpreter,
+        # google_search_and_scrape,
+        # get_current_stock_price,
+        # get_company_news,
+        # get_company_profile,
+        # get_stock_fundamentals,
+        # get_financial_statements,
+        # get_key_financial_ratios,
+        # get_analyst_recommendations,
+        # get_dividend_data,
+        # get_technical_indicators,
+        DuckDuckGoSearchRun()
     ]
 
     tools = [convert_to_openai_tool(f) for f in functions]

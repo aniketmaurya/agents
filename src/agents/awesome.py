@@ -1,6 +1,9 @@
 from hermes.functioncall import ModelInference
 
-model_inference = ModelInference(chat_template="chatml")
+# model_path = 'NousResearch/Hermes-2-Pro-Llama-3-8B'
+model_path = "/Users/aniket/weights/llama-cpp/Hermes-2-Pro-Llama-3-8B-Q8_0.gguf"
+
+model_inference = ModelInference(model_path=model_path, )
 model_inference.generate_function_call(
-    "When was Golden Gate bridge last painted?", None, 5
+    "Fetch the stock fundamentals data for Tesla (TSLA)", None, 2
 )

@@ -11,7 +11,6 @@ import xml.etree.ElementTree as ET
 from art import text2art
 from logging.handlers import RotatingFileHandler
 
-from tqdm.auto import tqdm
 
 logging.basicConfig(
     format="%(asctime)s,%(msecs)03d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s",
@@ -20,7 +19,7 @@ logging.basicConfig(
 )
 script_dir = os.path.dirname(os.path.abspath(__file__))
 now = datetime.datetime.now()
-log_folder = os.path.join(script_dir, "inference_logs")
+log_folder = os.path.join(os.path.curdir, "inference_logs")
 os.makedirs(log_folder, exist_ok=True)
 log_file_path = os.path.join(
     log_folder, f"function-calling-inference_{now.strftime('%Y-%m-%d_%H-%M-%S')}.log"
@@ -67,7 +66,6 @@ def get_chat_template(chat_template):
     template_path = os.path.join(script_dir, "chat_templates", f"{chat_template}.j2")
 
     if not os.path.exists(template_path):
-        print
         inference_logger.error(f"Template file not found: {chat_template}")
         return None
     try:
@@ -126,7 +124,7 @@ def validate_and_extract_tool_calls(assistant_content):
         root = ET.fromstring(xml_root_element)
 
         # extract JSON data
-        root_all = root.findall(".//tool_call")
+        root_all = root.findall(".//tool_calls")
         inference_logger.info(f"root_all: {root_all}")
         for element in root_all:
             json_data = None
