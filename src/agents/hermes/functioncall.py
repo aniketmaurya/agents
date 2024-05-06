@@ -30,7 +30,7 @@ class ModelInference:
         self.model = Llama(
             model_path=model_path,
             n_gpu_layers=1,
-            n_ctx=4096,
+            n_ctx=0,
             verbose=False,
             chat_format="chatml",
         )
@@ -44,6 +44,7 @@ class ModelInference:
         if self.tokenizer.chat_template is None:
             print("No chat template defined, getting chat_template...")
             self.tokenizer.chat_template = get_chat_template(self.chat_template)
+        inference_logger.info(self.tokenizer.special_tokens_map)
 
     def process_completion_and_validate(self, completion):
         assistant_message = get_assistant_message(
@@ -85,10 +86,11 @@ class ModelInference:
         print()
         # completions = self.model.create_chat_completion(prompt, tools=tools, max_tokens=2000, temperature=0.5, )
         completions = self.model(inputs, max_tokens=2000, temperature=0.5, echo=True)
-        inference_logger.info(f"completions:\n{completions}")
+        # inference_logger.info(f"completions:\n{completions}")
 
-        completion = completions["choices"][0]["text"]
+        completion = "<tool_call>" + completions["choices"][0]["text"] + "</tool_call>"
         # completion = completions["choices"][0]["message"]["content"]
+        inference_logger.info(f"completion:\n{completion}")
         return completion
 
     def generate_function_call(self, query, num_fewshot, max_depth=5):

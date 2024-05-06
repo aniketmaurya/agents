@@ -339,17 +339,17 @@ def get_company_profile(symbol: str) -> dict:
 
 def get_openai_tools() -> List[dict]:
     functions = [
-        # code_interpreter,
+        code_interpreter,
         google_search_and_scrape,
-        # get_current_stock_price,
-        # get_company_news,
-        # get_company_profile,
-        # get_stock_fundamentals,
-        # get_financial_statements,
-        # get_key_financial_ratios,
-        # get_analyst_recommendations,
-        # get_dividend_data,
-        # get_technical_indicators
+        get_current_stock_price,
+        get_company_news,
+        get_company_profile,
+        get_stock_fundamentals,
+        get_financial_statements,
+        get_key_financial_ratios,
+        get_analyst_recommendations,
+        get_dividend_data,
+        get_technical_indicators
     ]
 
     tools = [convert_to_openai_tool(f) for f in functions]
