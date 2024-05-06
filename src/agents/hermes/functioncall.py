@@ -20,15 +20,19 @@ from .utils import (
 
 class ModelInference:
     def __init__(
-            self,
-            model_path="/Users/aniket/weights/llama-cpp/Hermes-2-Pro-Llama-3-8B-Q8_0.gguf",
-            chat_template="chatml",
+        self,
+        model_path="/Users/aniket/weights/llama-cpp/Hermes-2-Pro-Llama-3-8B-Q8_0.gguf",
+        chat_template="chatml",
     ):
         inference_logger.info(print_nous_text_art())
         self.chat_template = chat_template
         self.prompter = PromptManager()
         self.model = Llama(
-            model_path=model_path, n_gpu_layers=1, n_ctx=4096, verbose=False, chat_format="chatml"
+            model_path=model_path,
+            n_gpu_layers=1,
+            n_ctx=4096,
+            verbose=False,
+            chat_format="chatml",
         )
 
         self.tokenizer = AutoTokenizer.from_pretrained(
