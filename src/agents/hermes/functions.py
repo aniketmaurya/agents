@@ -339,7 +339,7 @@ def get_company_profile(symbol: str) -> dict:
 
 def get_openai_tools() -> List[dict]:
     functions = [
-        code_interpreter,
+        # code_interpreter,
         google_search_and_scrape,
         # get_current_stock_price,
         # get_company_news,

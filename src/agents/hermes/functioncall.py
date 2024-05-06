@@ -20,11 +20,12 @@ from .utils import (
 
 class ModelInference:
     def __init__(
-        self,
-        model_path="/Users/aniket/weights/llama-cpp/Hermes-2-Pro-Llama-3-8B-Q8_0.gguf",
-        chat_template="chatml",
+            self,
+            model_path="/Users/aniket/weights/llama-cpp/Hermes-2-Pro-Llama-3-8B-Q8_0.gguf",
+            chat_template="chatml",
     ):
         inference_logger.info(print_nous_text_art())
+        self.chat_template = chat_template
         self.prompter = PromptManager()
         self.model = Llama(
             model_path=model_path, n_gpu_layers=1, n_ctx=4096, verbose=False, chat_format="chatml"
@@ -38,11 +39,11 @@ class ModelInference:
 
         if self.tokenizer.chat_template is None:
             print("No chat template defined, getting chat_template...")
-            self.tokenizer.chat_template = get_chat_template(chat_template)
+            self.tokenizer.chat_template = get_chat_template(self.chat_template)
 
-    def process_completion_and_validate(self, completion, chat_template):
+    def process_completion_and_validate(self, completion):
         assistant_message = get_assistant_message(
-            completion, chat_template, self.tokenizer.eos_token
+            completion, self.chat_template, self.tokenizer.eos_token
         )
 
         if assistant_message:
@@ -72,31 +73,31 @@ class ModelInference:
         results_dict = f'{{"name": "{function_name}", "content": {function_response}}}'
         return results_dict
 
-    def run_inference(self, prompt) -> str:
+    def run_inference(self, prompt, tools=None) -> str:
         inputs = self.tokenizer.apply_chat_template(
             prompt, add_generation_prompt=True, tokenize=False
         )
         inference_logger.info(f"inputs:\n{inputs}")
         print()
-        completions = self.model.create_chat_completion(prompt, max_tokens=2000, temperature=0.5,)
+        completions = self.model.create_chat_completion(prompt, tools=tools, max_tokens=2000, temperature=0.5, )
         inference_logger.info(f"completions:\n{completions}")
         # completion = completions["choices"][0]["text"]
         completion = completions["choices"][0]["message"]["content"]
         return inputs + completion
 
-    def generate_function_call(self, query, chat_template, num_fewshot, max_depth=5):
+    def generate_function_call(self, query, num_fewshot, max_depth=5):
         try:
             depth = 0
             user_message = f"{query}\nThis is the first turn and you don't have <tool_results> to analyze yet"
             chat = [{"role": "user", "content": user_message}]
             tools = functions.get_openai_tools()
             prompt = self.prompter.generate_prompt(chat, tools, num_fewshot)
-            completion = self.run_inference(prompt)
+            completion = self.run_inference(prompt, tools=tools)
 
             def recursive_loop(prompt, completion, depth):
                 nonlocal max_depth
                 tool_calls, assistant_message, error_message = (
-                    self.process_completion_and_validate(completion, chat_template)
+                    self.process_completion_and_validate(completion)
                 )
                 prompt.append({"role": "assistant", "content": assistant_message})
 
