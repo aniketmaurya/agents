@@ -7,20 +7,13 @@ import pandas as pd
 import yfinance as yf
 import concurrent.futures
 
-from typing import List
 from bs4 import BeautifulSoup
-from langchain_community.tools import DuckDuckGoSearchRun
 from agents.hermes.utils import inference_logger
 from langchain.tools import tool
-from langchain_core.utils.function_calling import convert_to_openai_tool
-from langchain_community.tools import WikipediaQueryRun
-from langchain_community.utilities import WikipediaAPIWrapper
-
-import json
 
 
 @tool
-def get_current_weather(city: str) -> str:
+def get_current_weather(city: str) -> dict:
     """Get the current weather for a given city.
 
     Args:
@@ -35,7 +28,7 @@ def get_current_weather(city: str) -> str:
             .json()
             .get("current_condition")
         )
-        return json.dumps(data, separators=(",", ":"))
+        return data
     except Exception as e:
         print(f"Error fetching current weather for {city}: {e}")
         return None
@@ -354,29 +347,3 @@ def get_company_profile(symbol: str) -> dict:
     except Exception as e:
         print(f"Error fetching company profile for {symbol}: {e}")
         return {}
-
-
-duckduckgo_search = DuckDuckGoSearchRun()
-api_wrapper = WikipediaAPIWrapper(top_k_results=1)
-wikipedia = WikipediaQueryRun(api_wrapper=api_wrapper)
-
-
-def get_openai_tools() -> List[dict]:
-    functions = [
-        # code_interpreter,
-        # google_search_and_scrape,
-        # get_current_stock_price,
-        # get_company_news,
-        # get_company_profile,
-        # get_stock_fundamentals,
-        # get_financial_statements,
-        # get_key_financial_ratios,
-        # get_analyst_recommendations,
-        # get_dividend_data,
-        # get_technical_indicators,
-        # duckduckgo_search,
-        wikipedia
-    ]
-
-    tools = [convert_to_openai_tool(f) for f in functions]
-    return tools

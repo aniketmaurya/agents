@@ -58,7 +58,8 @@ class ToolRegistry:
             raise ValueError(f"No tool call was found in ChatCompletion\n{output}")
 
         messages = []
-        tool_calls = output.choices[0].tool_calls
+        # https://platform.openai.com/docs/guides/function-calling
+        tool_calls = output.choices[0].message.tool_calls
         for tool_call in tool_calls:
             function_name = tool_call.function.name
             function_to_call = self.get(function_name)
@@ -67,7 +68,7 @@ class ToolRegistry:
                 raise ValueError(f"No function was found for {function_name}")
 
             function_args = json.loads(tool_call.function.arguments)
-            function_response = function_to_call(**function_args)
+            function_response = function_to_call.invoke(function_args)
             messages.append({
                 "tool_call_id": tool_call.id,
                 "role": "tool",
@@ -78,7 +79,7 @@ class ToolRegistry:
 
 
 def has_tool_use(output: ChatCompletion):
-    tool_calls = output.choices[0]["message"]["role"].get("tool_calls", [])
+    tool_calls = output.choices[0].message.tool_calls
     if tool_calls:
         return True
     return False
