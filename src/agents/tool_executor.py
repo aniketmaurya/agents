@@ -31,8 +31,12 @@ Step 2 is auto checked with Pydantic
 """
 
 import json
+from typing import Any, List
+
 from langchain_community.tools import StructuredTool
 import logging
+
+from langchain_core.utils.function_calling import convert_to_openai_function
 
 from agents.specs import ChatCompletion, ToolCall
 
@@ -40,9 +44,11 @@ from agents.specs import ChatCompletion, ToolCall
 class ToolRegistry:
     def __init__(self):
         self._tools: dict[str, StructuredTool] = {}
+        self._openai_tools: dict[str, Any] = {}
 
     def register_tool(self, tool: StructuredTool):
         self._tools[tool.name] = tool
+        self._openai_tools[tool.name] = convert_to_openai_function(tool)
 
     def get(self, name: str) -> StructuredTool:
         return self._tools.get(name)
@@ -52,6 +58,10 @@ class ToolRegistry:
 
     def pop(self, name: str) -> StructuredTool:
         return self._tools.pop(name)
+
+    @property
+    def openai_tools(self) -> List[dict[str, Any]]:
+        return list(self._openai_tools.values())
 
     def call_tool(self, output: ChatCompletion) -> list[dict[str, str]]:
         if not has_tool_use(output):

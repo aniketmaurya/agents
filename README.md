@@ -18,18 +18,27 @@ Install Agents with pip
 ## Usage/Examples
 
 ```python
-from agents.hermes.functioncall import ModelInference
+from langchain_core.utils.function_calling import convert_to_openai_function
+from rich import print
 
+from agents.specs import ChatCompletion
+from agents.tool_executor import ToolRegistry
+from agents.llm import create_tool_use_llm
+from agents.tools import get_current_weather
 
-# model_path = 'NousResearch/Hermes-2-Pro-Llama-3-8B'
-model_path = "/Users/aniket/weights/llama-cpp/Hermes-2-Pro-Llama-3-8B-Q8_0.gguf"
+llm = create_tool_use_llm(verbose=False, n_gpu_layers=-1)
 
-model_inference = ModelInference(
-    model_path=model_path,
+registry = ToolRegistry()
+registry.register_tool(get_current_weather)
+
+output = llm.create_chat_completion(
+    messages=[{"role": "user", "content": "How is the weather in SF today?"}],
+    tools=[{"type": "function", "function": registry.openai_tools[0]}],
 )
-model_inference.generate_function_call(
-    "When was Golden gate bridge painted last time?", None, 5
-)
+
+output = ChatCompletion(**output)
+tool_response = registry.call_tool(output)
+print(tool_response)
 ```
 
 
