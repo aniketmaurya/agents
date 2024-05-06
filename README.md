@@ -18,9 +18,6 @@ Install Agents with pip
 ## Usage/Examples
 
 ```python
-from langchain_core.utils.function_calling import convert_to_openai_function
-from rich import print
-
 from agents.specs import ChatCompletion
 from agents.tool_executor import ToolRegistry
 from agents.llm import create_tool_use_llm
@@ -39,6 +36,36 @@ output = llm.create_chat_completion(
 output = ChatCompletion(**output)
 tool_response = registry.call_tool(output)
 print(tool_response)
+```
+
+Output would like the following:
+
+```shell
+[{'tool_call_id': 'call_DnmopdelmY8Dl1NRXXx2gMDy',
+  'role': 'tool',
+  'name': 'get_current_weather',
+  'content': [{'FeelsLikeC': '17',
+    'FeelsLikeF': '62',
+    'cloudcover': '50',
+    'humidity': '50',
+    'localObsDateTime': '2024-05-06 03:35 PM',
+    'observation_time': '10:35 PM',
+    'precipInches': '0.0',
+    'precipMM': '0.0',
+    'pressure': '1021',
+    'pressureInches': '30',
+    'temp_C': '17',
+    'temp_F': '62',
+    'uvIndex': '4',
+    'visibility': '16',
+    'visibilityMiles': '9',
+    'weatherCode': '116',
+    'weatherDesc': [{'value': 'Partly cloudy'}],
+    'weatherIconUrl': [{'value': ''}],
+    'winddir16Point': 'W',
+    'winddirDegree': '270',
+    'windspeedKmph': '28',
+    'windspeedMiles': '17'}]}]
 ```
 
 
