@@ -27,7 +27,7 @@ class ModelInference:
         inference_logger.info(print_nous_text_art())
         self.prompter = PromptManager()
         self.model = Llama(
-            model_path=model_path, n_gpu_layers=1, n_ctx=4096, verbose=False
+            model_path=model_path, n_gpu_layers=1, n_ctx=4096, verbose=False, chat_format="chatml"
         )
 
         self.tokenizer = AutoTokenizer.from_pretrained(
@@ -78,10 +78,11 @@ class ModelInference:
         )
         inference_logger.info(f"inputs:\n{inputs}")
         print()
-        completions = self.model(inputs, max_tokens=2000, temperature=0.8, echo=True)
-        completion = completions["choices"][0]["text"]
-        inference_logger.info(f"completion:\n{completion}")
-        return completion
+        completions = self.model.create_chat_completion(prompt, max_tokens=2000, temperature=0.5,)
+        inference_logger.info(f"completions:\n{completions}")
+        # completion = completions["choices"][0]["text"]
+        completion = completions["choices"][0]["message"]["content"]
+        return inputs + completion
 
     def generate_function_call(self, query, chat_template, num_fewshot, max_depth=5):
         try:
