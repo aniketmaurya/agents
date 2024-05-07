@@ -34,10 +34,9 @@ import json
 from typing import Any, List
 
 from langchain_community.tools import StructuredTool
-import logging
 
 from langchain_core.utils.function_calling import convert_to_openai_function
-
+from loguru import logger
 from agents.specs import ChatCompletion, ToolCall
 
 
@@ -86,7 +85,11 @@ class ToolRegistry:
                 raise ValueError(f"No function was found for {function_name}")
 
             function_args = json.loads(tool_call.function.arguments)
+            logger.debug(f"Function {function_name} invoked with {function_args}")
             function_response = function_to_call.invoke(function_args)
+            logger.debug(
+                f"Function {function_name}, responded with {function_response}"
+            )
             messages.append({
                 "tool_call_id": tool_call.id,
                 "role": "tool",
@@ -114,14 +117,14 @@ def check_function_signature(
             function_info = tool.function
             if tool_registry:
                 if tool_registry.get(function_info.name) is None:
-                    logging.error(f"Function {function_info.name} is not available")
+                    logger.error(f"Function {function_info.name} is not available")
                     invalid = True
 
             arguments = function_info.arguments
             try:
                 json.loads(arguments)
             except json.JSONDecodeError as e:
-                logging.exception(e)
+                logger.exception(e)
                 invalid = True
         if invalid:
             return False

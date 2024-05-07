@@ -19,26 +19,19 @@ Install Agents with pip
 LLM with access to weather API:
 
 ```python
-from agents.tool_executor import ToolRegistry
-from agents.llm import create_tool_use_llm
-from agents.tools import get_current_weather
+from agents.llms.llm import LlamaCppChatCompletion
+from agents.tools import get_current_weather, wikipedia_search
 
-llm = create_tool_use_llm(verbose=False, n_gpu_layers=-1)
+llm = LlamaCppChatCompletion.from_default_llm(n_ctx=0)
+llm.bind_tools([get_current_weather, wikipedia_search])  # Add any tool from LangChain
 
-registry = ToolRegistry()
-registry.register_tool(get_current_weather)
-
-output = llm.create_chat_completion(
-    messages=[{"role": "user", "content": "How is the weather in SF today?"}],
-    tools=registry.openai_tools,
-)
-
-output = llm.create_chat_completion(
-    messages=[{"role": "user", "content": "How is the weather in SF today?"}],
-    tools=registry.openai_tools,
-)
-tool_response = registry.call_tool(output)
-print(tool_response)
+messages = [
+    {"role": "system", "content": "You are a helpful assistant that has access to tools and use that to help humans."},
+    {"role": "user", "content": "What is the weather in London?"}
+]
+output = llm.chat_completion(messages)
+tool_results = llm.run_tool(output)
+print(tool_results)
 ```
 
 <details>
