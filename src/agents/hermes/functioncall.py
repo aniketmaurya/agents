@@ -10,7 +10,6 @@ from .prompter import PromptManager
 from .validator import validate_function_call_schema
 
 from .utils import (
-    print_nous_text_art,
     inference_logger,
     get_assistant_message,
     get_chat_template,
@@ -24,7 +23,6 @@ class ModelInference:
         model_path="/Users/aniket/weights/llama-cpp/Hermes-2-Pro-Llama-3-8B-Q8_0.gguf",
         chat_template="chatml",
     ):
-        inference_logger.info(print_nous_text_art())
         self.chat_template = chat_template
         self.prompter = PromptManager()
         self.model = Llama(

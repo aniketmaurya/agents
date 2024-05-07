@@ -1,10 +1,9 @@
 # Agents 🤖
 
-<!-- A brief description of what this project does and who it's for -->
-A fun project to build Agentic workflows with function calling, powered by LangChain.
-
+Build Agentic workflows with function calling, powered by LangChain.
 
 ## Installation
+
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/aniketmaurya/python-project-template?template=false)
 
 Install Agents with pip
@@ -16,6 +15,8 @@ Install Agents with pip
 ```
 
 ## Usage/Examples
+
+LLM with access to weather API:
 
 ```python
 from agents.specs import ChatCompletion
@@ -38,7 +39,8 @@ tool_response = registry.call_tool(output)
 print(tool_response)
 ```
 
-Output would like the following:
+<details>
+    <summary>See output:</summary>
 
 ```shell
 [{'tool_call_id': 'call_DnmopdelmY8Dl1NRXXx2gMDy',
@@ -67,6 +69,10 @@ Output would like the following:
     'windspeedKmph': '28',
     'windspeedMiles': '17'}]}]
 ```
+
+</details>
+
+
 
 
 <!-- ## Demo

@@ -23,8 +23,7 @@ clean:
 	rm -f .coverage
 
 style:
-	black .
-	isort --profile black .
+	ruff format src
 
 push:
 	git push && git push --tags

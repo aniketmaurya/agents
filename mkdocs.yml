@@ -1,11 +1,11 @@
-site_name: TEMPLATE_NAME
-site_description: TEMPLATE_DESCRIPTION
-site_author: AUTHOR NAME
-copyright: 'Copyright &copy; 2023 AUTHOR NAME'
+site_name: Agents
+site_description: Build Agentic workflows with function calling, powered by LangChain.
+site_author: Aniket Maurya
+copyright: 'Copyright &copy; 2024 Aniket Maurya'
 
 banner_url: https://IMAGE_URL
-repo_url: https://github.com/aniketmaurya/python-project-template/
-repo_name: aniketmaurya/python-project-template
+repo_url: https://github.com/aniketmaurya/agents/
+repo_name: aniketmaurya/agents
 
 theme:
   name: material

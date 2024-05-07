@@ -26,7 +26,7 @@ def get_current_weather(city: str) -> dict:
         data = (
             requests.get(f"https://wttr.in/{city}?format=j1")
             .json()
-            .get("current_condition")
+            .get("current_condition")[0]
         )
         return data
     except Exception as e:
