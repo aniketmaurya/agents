@@ -1,4 +1,5 @@
 from agents.specs import ChatCompletion
+from pydantic import BaseModel
 from agents.tools import get_current_weather
 from agents.tool_executor import ToolRegistry
 import json
@@ -13,6 +14,10 @@ def test_registry():
     tool_registry.register_tool(get_current_weather)
     assert tool_registry.get("get_current_weather")
 
-    completions = ChatCompletion(**completion_data)
-    messages = tool_registry.call_tool(completions)
+    messages = tool_registry.call_tool(completion_data)
     assert "FeelsLikeC" in messages[0]["content"]
+
+
+def test_completion():
+    completions = ChatCompletion(**completion_data)
+    assert isinstance(completions, BaseModel)

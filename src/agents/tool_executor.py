@@ -61,9 +61,17 @@ class ToolRegistry:
 
     @property
     def openai_tools(self) -> List[dict[str, Any]]:
-        return list(self._openai_tools.values())
+        # [{"type": "function", "function": registry.openai_tools[0]}],
+        result = []
+        for oai_tool in self._openai_tools.values():
+            result.append({"type": "function", "function": oai_tool})
 
-    def call_tool(self, output: ChatCompletion) -> list[dict[str, str]]:
+        return result
+
+    def call_tool(self, output: ChatCompletion | dict) -> list[dict[str, str]]:
+        if isinstance(output, dict):
+            output = ChatCompletion(**output)
+
         if not has_tool_use(output):
             raise ValueError(f"No tool call was found in ChatCompletion\n{output}")
 

@@ -19,7 +19,6 @@ Install Agents with pip
 LLM with access to weather API:
 
 ```python
-from agents.specs import ChatCompletion
 from agents.tool_executor import ToolRegistry
 from agents.llm import create_tool_use_llm
 from agents.tools import get_current_weather
@@ -31,10 +30,13 @@ registry.register_tool(get_current_weather)
 
 output = llm.create_chat_completion(
     messages=[{"role": "user", "content": "How is the weather in SF today?"}],
-    tools=[{"type": "function", "function": registry.openai_tools[0]}],
+    tools=registry.openai_tools,
 )
 
-output = ChatCompletion(**output)
+output = llm.create_chat_completion(
+    messages=[{"role": "user", "content": "How is the weather in SF today?"}],
+    tools=registry.openai_tools,
+)
 tool_response = registry.call_tool(output)
 print(tool_response)
 ```
