@@ -8,8 +8,8 @@ import yfinance as yf
 import concurrent.futures
 
 from bs4 import BeautifulSoup
-from agents.hermes.utils import inference_logger
 from langchain.tools import tool
+import logging
 
 
 @tool
@@ -83,7 +83,7 @@ def code_interpreter(code_markdown: str) -> dict | str:
 
     except Exception as e:
         error_message = f"An error occurred: {e}"
-        inference_logger.error(error_message)
+        logging.error(error_message)
         return error_message
 
 
@@ -105,17 +105,15 @@ def google_search_and_scrape(query: str) -> dict:
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.3"
     }
 
-    inference_logger.info(
-        f"Performing google search with query: {query}\nplease wait..."
-    )
+    logging.info(f"Performing google search with query: {query}\nplease wait...")
     response = requests.get(url, params=params, headers=headers)
     soup = BeautifulSoup(response.text, "html.parser")
     urls = [
         result.find("a")["href"] for result in soup.find_all("div", class_="tF2Cxc")
     ]
 
-    inference_logger.info("Scraping text from urls, please wait...")
-    [inference_logger.info(url) for url in urls]
+    logging.info("Scraping text from urls, please wait...")
+    [logging.info(url) for url in urls]
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
         futures = [
             executor.submit(

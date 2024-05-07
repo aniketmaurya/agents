@@ -4,8 +4,10 @@ import ast
 import json
 from jsonschema import validate
 from pydantic import ValidationError
-from .utils import inference_logger, extract_json_from_markdown
+from .utils import get_hermes_logger, extract_json_from_markdown
 from .schema import FunctionCall, FunctionSignature
+
+inference_logger = get_hermes_logger()
 
 
 def validate_function_call_schema(call, signatures):

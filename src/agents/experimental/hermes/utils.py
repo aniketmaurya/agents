@@ -4,18 +4,21 @@ import ast
 import os
 import re
 import json
-import logging
 import xml.etree.ElementTree as ET
 
 from art import text2art
+import logging
 
-logging.basicConfig(
-    format="%(asctime)s,%(msecs)03d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s",
-    datefmt="%Y-%m-%d:%H:%M:%S",
-    level=logging.INFO,
-)
 script_dir = os.path.dirname(os.path.abspath(__file__))
-inference_logger = logging.getLogger("function-calling-inference")
+
+
+def get_hermes_logger():
+    logging.basicConfig(
+        format="%(asctime)s,%(msecs)03d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s",
+        datefmt="%Y-%m-%d:%H:%M:%S",
+        level=logging.INFO,
+    )
+    return logging.getLogger("function-calling-inference")
 
 
 def print_nous_text_art(suffix=None):
@@ -46,7 +49,7 @@ def get_chat_template(chat_template):
     template_path = os.path.join(script_dir, "chat_templates", f"{chat_template}.j2")
 
     if not os.path.exists(template_path):
-        inference_logger.error(f"Template file not found: {chat_template}")
+        logging.error(f"Template file not found: {chat_template}")
         return None
     try:
         with open(template_path) as file:
@@ -88,12 +91,12 @@ def get_assistant_message(completion, chat_template, eos_token):
         return assistant_content.replace(eos_token, "")
     else:
         assistant_content = None
-        inference_logger.info("No match found for the assistant pattern")
+        logging.info("No match found for the assistant pattern")
         return assistant_content
 
 
 def validate_and_extract_tool_calls(assistant_content):
-    inference_logger.info(f"assistant_content: {assistant_content}")
+    logging.info(f"assistant_content: {assistant_content}")
     validation_result = False
     tool_calls = []
     error_message = None
@@ -105,7 +108,7 @@ def validate_and_extract_tool_calls(assistant_content):
 
         # extract JSON data
         root_all = root.findall(".//tool_call")
-        inference_logger.info(f"root_all: {root_all}")
+        logging.info(f"root_all: {root_all}")
         for element in root_all:
             json_data = None
             try:
@@ -125,11 +128,11 @@ def validate_and_extract_tool_calls(assistant_content):
                             f"- Fallback Syntax/Value Error: {eval_err}\n"
                             f"- Problematic JSON text: {json_text}"
                         )
-                        inference_logger.error(error_message)
+                        logging.error(error_message)
                         continue
             except Exception as e:
                 error_message = f"Cannot strip text: {e}"
-                inference_logger.error(error_message)
+                logging.error(error_message)
 
             if json_data is not None:
                 tool_calls.append(json_data)
@@ -137,7 +140,7 @@ def validate_and_extract_tool_calls(assistant_content):
 
     except ET.ParseError as err:
         error_message = f"XML Parse Error: {err}"
-        inference_logger.error(f"XML Parse Error: {err}")
+        logging.error(f"XML Parse Error: {err}")
 
     # Return default values if no valid data is extracted
     return validation_result, tool_calls, error_message

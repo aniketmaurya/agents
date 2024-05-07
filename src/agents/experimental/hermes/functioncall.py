@@ -10,11 +10,13 @@ from .prompter import PromptManager
 from .validator import validate_function_call_schema
 
 from .utils import (
-    inference_logger,
+    get_hermes_logger,
     get_assistant_message,
     get_chat_template,
     validate_and_extract_tool_calls,
 )
+
+inference_logger = get_hermes_logger()
 
 
 class ModelInference:

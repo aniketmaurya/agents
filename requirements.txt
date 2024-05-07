@@ -2,3 +2,4 @@ langchain
 langchain-community>=0.0.36
 langchainhub>=0.1.15
 llama_cpp_python  # please install the correct build based on your hardware and OS
+pandas
