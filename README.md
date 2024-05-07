@@ -20,7 +20,7 @@ LLM with access to weather API:
 
 ```python
 from agents.tool_executor import ToolRegistry
-from agents.llm import create_tool_use_llm
+from agents.llms import create_tool_use_llm
 from agents.tools import get_current_weather
 
 llm = create_tool_use_llm(verbose=False, n_gpu_layers=-1)

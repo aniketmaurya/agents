@@ -85,9 +85,11 @@ class ToolRegistry:
                 raise ValueError(f"No function was found for {function_name}")
 
             function_args = json.loads(tool_call.function.arguments)
-            logger.info(f"Function {function_name} invoked with {function_args}")
+            logger.debug(f"Function {function_name} invoked with {function_args}")
             function_response = function_to_call.invoke(function_args)
-            logger.info(f"Function {function_name}, responded with {function_response}")
+            logger.debug(
+                f"Function {function_name}, responded with {function_response}"
+            )
             messages.append({
                 "tool_call_id": tool_call.id,
                 "role": "tool",

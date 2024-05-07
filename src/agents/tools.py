@@ -9,7 +9,10 @@ import concurrent.futures
 
 from bs4 import BeautifulSoup
 from langchain.tools import tool
-import logging
+from langchain_community.utilities import WikipediaAPIWrapper
+from loguru import logger
+
+wikipedia_api_wrapper = None
 
 
 @tool
@@ -83,7 +86,7 @@ def code_interpreter(code_markdown: str) -> dict | str:
 
     except Exception as e:
         error_message = f"An error occurred: {e}"
-        logging.error(error_message)
+        logger.error(error_message)
         return error_message
 
 
@@ -105,15 +108,15 @@ def google_search_and_scrape(query: str) -> dict:
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.3"
     }
 
-    logging.info(f"Performing google search with query: {query}\nplease wait...")
+    logger.info(f"Performing google search with query: {query}\nplease wait...")
     response = requests.get(url, params=params, headers=headers)
     soup = BeautifulSoup(response.text, "html.parser")
     urls = [
         result.find("a")["href"] for result in soup.find_all("div", class_="tF2Cxc")
     ]
 
-    logging.info("Scraping text from urls, please wait...")
-    [logging.info(url) for url in urls]
+    logger.info("Scraping text from urls, please wait...")
+    [logger.info(url) for url in urls]
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
         futures = [
             executor.submit(
@@ -345,3 +348,22 @@ def get_company_profile(symbol: str) -> dict:
     except Exception as e:
         print(f"Error fetching company profile for {symbol}: {e}")
         return {}
+
+
+@tool
+def wikipedia_search(query: str) -> str:
+    """Tool that searches the Wikipedia API. Useful for when you need to answer
+    general questions about people, places, companies, facts, historical
+    events, or other subjects.
+
+    Args:
+        Input should be a search query.
+
+    Returns:
+        Wikipedia search result.
+    """
+    global wikipedia_api_wrapper
+    if wikipedia_api_wrapper is None:
+        wikipedia_api_wrapper = WikipediaAPIWrapper(top_k_results=1)
+
+    return wikipedia_api_wrapper.run(query)

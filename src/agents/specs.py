@@ -16,7 +16,7 @@ class ToolCall(BaseModel):
 class Message(BaseModel):
     role: str
     content: Optional[str]
-    tool_calls: List[ToolCall]
+    tool_calls: Optional[List[ToolCall]] = None
 
 
 class Choice(BaseModel):
