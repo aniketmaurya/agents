@@ -29,7 +29,7 @@ messages = [
     {"role": "system", "content": "You are a helpful assistant that has access to tools and use that to help humans."},
     {"role": "user", "content": "What is the weather in London?"}
 ]
-output = llm.chat(messages)
+output = llm.chat_completion(messages)
 tool_results = llm.run_tool(output)
 print(tool_results)
 ```

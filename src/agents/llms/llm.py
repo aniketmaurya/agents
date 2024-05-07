@@ -50,7 +50,7 @@ class LlamaCppChatCompletion:
     def tools(self):
         return self.tool_registry.openai_tools
 
-    def chat(
+    def chat_completion(
         self, messages: List[ChatCompletionRequestMessage], **kwargs
     ) -> ChatCompletion:
         output = self.model.create_chat_completion(messages, tools=self.tools, **kwargs)
