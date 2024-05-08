@@ -27,7 +27,7 @@ class CohereChatCompletion:
 
     def _format_cohere_to_openai(self, output: AIMessage):
         response_metadata = output.response_metadata
-        _tool_calls = response_metadata["tool_calls"]
+        _tool_calls = response_metadata.get("tool_calls", [])
         tool_calls = []
         for tool in _tool_calls:
             tool = ToolCall(id=tool["id"], type=tool["type"], function=tool["function"])
