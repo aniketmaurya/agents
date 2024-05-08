@@ -71,7 +71,7 @@ class ToolRegistry:
         if isinstance(output, dict):
             output = ChatCompletion(**output)
 
-        if not has_tool_use(output):
+        if not need_tool_use(output):
             raise ValueError(f"No tool call was found in ChatCompletion\n{output}")
 
         messages = []
@@ -99,7 +99,7 @@ class ToolRegistry:
         return messages
 
 
-def has_tool_use(output: ChatCompletion):
+def need_tool_use(output: ChatCompletion) -> bool:
     tool_calls = output.choices[0].message.tool_calls
     if tool_calls:
         return True
