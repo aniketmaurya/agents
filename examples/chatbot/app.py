@@ -34,13 +34,12 @@ def llamacpp_chat(message, history):
 
 gr.ChatInterface(
     llamacpp_chat,
-    chatbot=gr.Chatbot(height=300),
+    chatbot=gr.Chatbot(height=300, likeable=True),
     textbox=gr.Textbox(placeholder="Ask me any question", container=False, scale=7),
     title="Agent",
     description="Ask agent any question",
     theme="soft",
-    examples=["Hello", "Am I cool?", "Are tomatoes vegetables?"],
-    cache_examples=True,
+    cache_examples=False,
     retry_btn=None,
     undo_btn="Delete Previous",
     clear_btn="Clear",
