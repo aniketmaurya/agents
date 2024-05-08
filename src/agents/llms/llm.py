@@ -4,8 +4,29 @@ from loguru import logger
 from agents.specs import ChatCompletion
 from agents.tool_executor import ToolRegistry
 from langchain_core.tools import StructuredTool
-from llama_cpp import Llama, ChatCompletionRequestMessage
+from llama_cpp import ChatCompletionRequestMessage
 from llama_cpp.llama_tokenizer import LlamaHFTokenizer
+
+from llama_cpp import Llama
+from llama_cpp.llama_chat_format import MoondreamChatHandler
+
+
+def create_image_inspector(**kwargs):
+    chat_handler = MoondreamChatHandler.from_pretrained(
+        repo_id="vikhyatk/moondream2",
+        filename="*mmproj*",
+    )
+
+    llm = Llama.from_pretrained(
+        repo_id="vikhyatk/moondream2",
+        filename="*text-model*",
+        chat_handler=chat_handler,
+        n_ctx=2048,  # n_ctx should be increased to accommodate the image embedding
+        verbose=False,
+        n_gpu_layers=-1,
+        **kwargs,
+    )
+    return llm
 
 
 def create_tool_use_llm(**kwargs):
