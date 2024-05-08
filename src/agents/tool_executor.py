@@ -43,11 +43,11 @@ from agents.specs import ChatCompletion, ToolCall
 class ToolRegistry:
     def __init__(self):
         self._tools: dict[str, StructuredTool] = {}
-        self._openai_tools: dict[str, Any] = {}
+        self._formatted_tools: dict[str, Any] = {}
 
     def register_tool(self, tool: StructuredTool):
         self._tools[tool.name] = tool
-        self._openai_tools[tool.name] = convert_to_openai_function(tool)
+        self._formatted_tools[tool.name] = convert_to_openai_function(tool)
 
     def get(self, name: str) -> StructuredTool:
         return self._tools.get(name)
@@ -62,7 +62,7 @@ class ToolRegistry:
     def openai_tools(self) -> List[dict[str, Any]]:
         # [{"type": "function", "function": registry.openai_tools[0]}],
         result = []
-        for oai_tool in self._openai_tools.values():
+        for oai_tool in self._formatted_tools.values():
             result.append({"type": "function", "function": oai_tool})
 
         return result

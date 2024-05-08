@@ -1,10 +1,12 @@
 import json
 import requests
+from agents.llms.llm import create_image_inspector
 from langchain.tools import tool
 from langchain_community.utilities import WikipediaAPIWrapper
 from loguru import logger
 
 wikipedia_api_wrapper = None
+_image_inspector = None
 
 
 @tool
@@ -64,3 +66,31 @@ def google_search(query: str) -> str:
 
     for result in search(query, num_results=1, sleep_interval=5, advanced=True):
         return f"url:{result.url},\ndescription:{result.description}"
+
+
+@tool
+def image_inspector(image_url_or_path: str) -> str:
+    """
+    Read and describe the image and objects in the image.
+    Args:
+        Image url or file path to image.
+
+    Returns:
+        Description of the image
+    """
+    global _image_inspector
+    if _image_inspector is None:
+        _image_inspector = create_image_inspector()
+
+    response = _image_inspector.create_chat_completion(
+        messages=[
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": "What's in this image?"},
+                    {"type": "image_url", "image_url": {"url": image_url_or_path}},
+                ],
+            }
+        ]
+    )
+    return response["choices"][0]["message"]["content"]
