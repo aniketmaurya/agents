@@ -17,7 +17,7 @@ def llamacpp_chat(message, history):
     for user, ai in history:
         history_langchain_format.append({"role": "user", "content": user})
         history_langchain_format.append({"role": "assistant", "content": ai})
-    history_langchain_format.append({"role": "assistant", "content": message})
+    history_langchain_format.append({"role": "user", "content": message})
     messages = history_langchain_format
 
     output = llm.chat_completion(messages)
