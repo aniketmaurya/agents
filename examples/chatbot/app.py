@@ -35,9 +35,7 @@ def llamacpp_chat(message, history):
 gr.ChatInterface(
     llamacpp_chat,
     chatbot=gr.Chatbot(height=300),
-    textbox=gr.Textbox(
-        placeholder="Ask me a yes or no question", container=False, scale=7
-    ),
+    textbox=gr.Textbox(placeholder="Ask me any question", container=False, scale=7),
     title="Agent",
     description="Ask agent any question",
     theme="soft",

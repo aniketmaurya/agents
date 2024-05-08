@@ -4,3 +4,5 @@ langchainhub>=0.1.15
 llama_cpp_python  # please install the correct build based on your hardware and OS
 pandas
 loguru
+wikipedia
+googlesearch-python
