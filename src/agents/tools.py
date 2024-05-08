@@ -367,3 +367,20 @@ def wikipedia_search(query: str) -> str:
         wikipedia_api_wrapper = WikipediaAPIWrapper(top_k_results=1)
 
     return wikipedia_api_wrapper.run(query)
+
+
+@tool
+def google_search(query: str) -> str:
+    """Performs a Google search for the given query, retrieves the top search
+    result URLs and description from the page.
+
+    Args:
+        Input should be a search query.
+
+    Returns:
+        URL and description of the search result.
+    """
+    from googlesearch import search
+
+    for result in search(query, num_results=1, sleep_interval=5, advanced=True):
+        return f"url:{result.url},\ndescription:{result.description}"
