@@ -12,42 +12,46 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest, macos-latest ]
-        python-version: [3.8, 3.9]
+        python-version: [3.8, 3.9, 3.10]
         include:
           - os: ubuntu-latest
             path: ~/.cache/pip
           - os: macos-latest
             path: ~/Library/Caches/pip
+
+    timeout-minutes: 35
     env:
       OS: ${{ matrix.os }}
-      PYTHON: '3.9'
-
+      TORCH_URL: "https://download.pytorch.org/whl/cpu/torch_stable.html"
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Cache pip
-        uses: actions/cache@v2
-        with:
-          path: ${{ matrix.path }}
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-            ${{ runner.os }}-
+      - name: Get pip cache dir
+        id: pip-cache
+        run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
 
-      - name: Install
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          key: ${{ runner.os }}-${{ matrix.python-version }}-${{ matrix.requires }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: ${{ runner.os }}-${{ matrix.python-version }}-${{ matrix.requires }}-pip-
+
+      - name: Install package & dependencies
         run: |
           python --version
           pip --version
           python -m pip install --upgrade pip
-          pip install coverage pytest
+          pip install -e '.[test]' -U -q --find-links $TORCH_URL
+          pip install -r tests/requirements.txt
           pip install .
           pip list
         shell: bash
