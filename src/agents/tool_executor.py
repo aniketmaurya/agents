@@ -41,7 +41,8 @@ from agents.specs import ChatCompletion, ToolCall
 
 
 class ToolRegistry:
-    def __init__(self):
+    def __init__(self, tool_format="openai"):
+        self.tool_format = tool_format
         self._tools: Dict[str, StructuredTool] = {}
         self._formatted_tools: Dict[str, Any] = {}
 
