@@ -79,5 +79,5 @@ class LlamaCppChatCompletion:
         logger.debug(output)
         return ChatCompletion(**output)
 
-    def run_tool(self, chat_completion: ChatCompletion) -> List[Dict[str, Any]]:
+    def run_tools(self, chat_completion: ChatCompletion) -> List[Dict[str, Any]]:
         return self.tool_registry.call_tools(chat_completion)
