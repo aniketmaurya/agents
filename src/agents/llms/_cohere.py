@@ -3,7 +3,7 @@ import time
 from langchain_cohere import ChatCohere
 
 
-from typing import List, Optional, Any
+from typing import List, Optional, Any, Dict
 
 from langchain_core.messages import AIMessage
 from loguru import logger
@@ -59,5 +59,5 @@ class CohereChatCompletion:
         logger.debug(output)
         return self._format_cohere_to_openai(output)
 
-    def run_tool(self, chat_completion: ChatCompletion) -> list[dict[str, Any]]:
+    def run_tool(self, chat_completion: ChatCompletion) -> List[Dict[str, Any]]:
         return self.tool_registry.call_tool(chat_completion)
