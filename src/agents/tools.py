@@ -93,4 +93,7 @@ def image_inspector(image_url_or_path: str) -> str:
             }
         ]
     )
-    return response["choices"][0]["message"]["content"]
+    return json.dumps({
+        "image_url_or_path": image_url_or_path,
+        "image description": response["choices"][0]["message"]["content"]
+    }, indent=2)

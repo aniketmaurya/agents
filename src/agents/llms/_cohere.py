@@ -17,7 +17,6 @@ from llama_cpp import ChatCompletionRequestMessage
 class CohereChatCompletion:
     def __init__(self, **kwargs):
         self.llm = ChatCohere()
-
         self.tool_registry = ToolRegistry()
 
     def bind_tools(self, tools: Optional[List[StructuredTool]] = None):
