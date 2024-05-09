@@ -42,13 +42,13 @@ output = llm.chat_completion(messages)
 
 if need_tool_use(output):
     print("Using weather tool")
-    tool_results = llm.run_tool(output)
+    tool_results = llm.run_tools(output)
     tool_results[0]["role"] = "assistant"
 
     updated_messages = messages + tool_results
     updated_messages = updated_messages + [
         {"role": "user", "content": "Think step by step and answer my question based on the above context."}
-        ]
+    ]
     output = llm.chat_completion(updated_messages)
 
 print(output.choices[0].message.content)
@@ -99,7 +99,7 @@ messages = [
      "content": f"Check this image {image_url} and suggest me a location where I can go in London which looks similar"}
 ]
 output = llm.chat_completion(messages)
-tool_results = llm.run_tool(output)
+tool_results = llm.run_tools(output)
 
 updated_messages = messages + tool_results
 messages = updated_messages + [{"role": "user", "content": "please answer me, based on the tool results."}]

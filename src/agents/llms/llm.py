@@ -80,4 +80,4 @@ class LlamaCppChatCompletion:
         return ChatCompletion(**output)
 
     def run_tool(self, chat_completion: ChatCompletion) -> List[Dict[str, Any]]:
-        return self.tool_registry.call_tool(chat_completion)
+        return self.tool_registry.call_tools(chat_completion)

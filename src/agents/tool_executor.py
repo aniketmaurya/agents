@@ -67,7 +67,23 @@ class ToolRegistry:
 
         return result
 
-    def call_tool(self, output: Union[ChatCompletion, Dict]) -> List[Dict[str, str]]:
+    def call_tool(self, tool: ToolCall) -> Any:
+        """Call a single tool and return the result."""
+        function_name = tool.function.name
+        function_to_call = self.get(function_name)
+
+        if not function_to_call:
+            raise ValueError(f"No function was found for {function_name}")
+
+        function_args = json.loads(tool.function.arguments)
+        logger.debug(f"Function {function_name} invoked with {function_args}")
+        function_response = function_to_call.invoke(function_args)
+        logger.debug(f"Function {function_name}, responded with {function_response}")
+        return function_response
+
+    def call_tools(self, output: Union[ChatCompletion, Dict]) -> List[Dict[str, str]]:
+        """Call all tools from the ChatCompletion output and return the
+        result."""
         if isinstance(output, dict):
             output = ChatCompletion(**output)
 
@@ -77,21 +93,11 @@ class ToolRegistry:
         messages = []
         # https://platform.openai.com/docs/guides/function-calling
         tool_calls = output.choices[0].message.tool_calls
-        for tool_call in tool_calls:
-            function_name = tool_call.function.name
-            function_to_call = self.get(function_name)
-
-            if not function_to_call:
-                raise ValueError(f"No function was found for {function_name}")
-
-            function_args = json.loads(tool_call.function.arguments)
-            logger.debug(f"Function {function_name} invoked with {function_args}")
-            function_response = function_to_call.invoke(function_args)
-            logger.debug(
-                f"Function {function_name}, responded with {function_response}"
-            )
+        for tool in tool_calls:
+            function_name = tool.function.name
+            function_response = self.call_tool(tool)
             messages.append({
-                "tool_call_id": tool_call.id,
+                "tool_call_id": tool.id,
                 "role": "tool",
                 "name": function_name,
                 "content": function_response,

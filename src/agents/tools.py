@@ -5,6 +5,8 @@ from langchain.tools import tool
 from langchain_community.utilities import WikipediaAPIWrapper
 from loguru import logger
 
+from agents.utils import llama_cpp_image_handler
+
 wikipedia_api_wrapper = None
 _image_inspector = None
 
@@ -80,6 +82,9 @@ def image_inspector(image_url_or_path: str) -> str:
     """
     global _image_inspector
     if _image_inspector is None:
+        logger.info(
+            "Loading image inspector for first time. This might take a while..."
+        )
         _image_inspector = create_image_inspector()
 
     response = _image_inspector.create_chat_completion(
@@ -87,13 +92,21 @@ def image_inspector(image_url_or_path: str) -> str:
             {
                 "role": "user",
                 "content": [
-                    {"type": "text", "text": "What's in this image?"},
-                    {"type": "image_url", "image_url": {"url": image_url_or_path}},
+                    {"type": "text", "text": "Describe this image in detail please."},
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": llama_cpp_image_handler(image_url_or_path)
+                        },
+                    },
                 ],
             }
         ]
     )
-    return json.dumps({
-        "image_url_or_path": image_url_or_path,
-        "image description": response["choices"][0]["message"]["content"]
-    }, indent=2)
+    return json.dumps(
+        {
+            "image_url_or_path": image_url_or_path,
+            "image description": response["choices"][0]["message"]["content"],
+        },
+        indent=2,
+    )

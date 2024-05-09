@@ -58,5 +58,5 @@ class CohereChatCompletion:
         logger.debug(output)
         return self._format_cohere_to_openai(output)
 
-    def run_tool(self, chat_completion: ChatCompletion) -> List[Dict[str, Any]]:
-        return self.tool_registry.call_tool(chat_completion)
+    def run_tools(self, chat_completion: ChatCompletion) -> List[Dict[str, Any]]:
+        return self.tool_registry.call_tools(chat_completion)
