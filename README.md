@@ -84,3 +84,10 @@ Answer 1
 #### Question 2
 
 Answer 2 -->
+
+## Acknowledgements
+
+Built with PyCharm 🧡. Thanks to JetBrains for supporting this work by providing free license.
+
+<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/PyCharm_icon.svg" alt="PyCharm logo.">
+<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg" alt="JetBrains logo.">
