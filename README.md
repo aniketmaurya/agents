@@ -113,6 +113,7 @@ print(output.choices[0].message.content)
 <details>
     <summary>See output:</summary>
 
+```
 The weather in London, as of [1;92m1:58[0m PM, is partly cloudy with a temperature of [1;36m20[0m degrees Celsius or
 [1;36m68[0m degrees
 Fahrenheit. The humidity is at [1;36m49[0m%, and the UV index is [1;36m5[0m. There is no precipitation, and the wind
@@ -120,6 +121,7 @@ speed is mild at
 [1;36m7[0m km/h or [1;36m4[0m mph. The pressure is at [1;36m1029[0m millibars, with a visibility range of [
 1;36m10[0m km or [1;36m6[0m miles. So, overall, it's
 a pleasant day with mild temperatures and partly cloudy skies.
+```
 
 </details>
 
@@ -152,6 +154,7 @@ print(output.choices[0].message.content)
 <details>
     <summary>See output:</summary>
 
+```
 Based on the image you provided, it appears to be a nature boardwalk surrounded by lush green grass and a peaceful
 sky filled with clouds. The presence of people indicates that it could be a popular spot for outdoor activities or
 leisurely walks. If you're looking for a similar location in London, you might consider visiting one of the city's
@@ -179,7 +182,7 @@ Serpentine Lake, Speaker's Corner, and several monuments.
 
 These locations all offer a peaceful and natural environment similar to the image you provided, making them
 excellent choices for a day out in London.
-
+```
 
 </details>
 
