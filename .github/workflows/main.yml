@@ -50,9 +50,8 @@ jobs:
           python --version
           pip --version
           python -m pip install --upgrade pip
-          pip install -e '.[test]' -U -q --find-links $TORCH_URL
+          pip install . -U -q --find-links $TORCH_URL
           pip install -r tests/requirements.txt
-          pip install .
           pip list
         shell: bash
 
