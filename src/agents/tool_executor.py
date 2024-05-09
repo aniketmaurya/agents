@@ -31,7 +31,7 @@ Step 2 is auto checked with Pydantic
 """
 
 import json
-from typing import Any, List, Union
+from typing import Any, List, Union, Dict
 
 from langchain_community.tools import StructuredTool
 
@@ -42,8 +42,8 @@ from agents.specs import ChatCompletion, ToolCall
 
 class ToolRegistry:
     def __init__(self):
-        self._tools: dict[str, StructuredTool] = {}
-        self._formatted_tools: dict[str, Any] = {}
+        self._tools: Dict[str, StructuredTool] = {}
+        self._formatted_tools: Dict[str, Any] = {}
 
     def register_tool(self, tool: StructuredTool):
         self._tools[tool.name] = tool
@@ -59,7 +59,7 @@ class ToolRegistry:
         return self._tools.pop(name)
 
     @property
-    def openai_tools(self) -> List[dict[str, Any]]:
+    def openai_tools(self) -> List[Dict[str, Any]]:
         # [{"type": "function", "function": registry.openai_tools[0]}],
         result = []
         for oai_tool in self._formatted_tools.values():
@@ -67,7 +67,7 @@ class ToolRegistry:
 
         return result
 
-    def call_tool(self, output: Union[ChatCompletion, dict]) -> list[dict[str, str]]:
+    def call_tool(self, output: Union[ChatCompletion, Dict]) -> List[Dict[str, str]]:
         if isinstance(output, dict):
             output = ChatCompletion(**output)
 
