@@ -6,12 +6,18 @@ Build Agentic workflows with function calling, powered by LangChain.
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/aniketmaurya/python-project-template?template=false)
 
-Install Agents with pip
+**Install latest branch:**
 
-```bash
+```shell
+pip install git+https://github.com/aniketmaurya/agents.git@main
+```
+
+**or, for editable installation:**
+
+```shell
   git clone https://github.com/aniketmaurya/agents.git
   cd agents
-  pip install .
+  pip install -e .
 ```
 
 ## Usage/Examples
