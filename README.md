@@ -57,7 +57,7 @@ print(output.choices[0].message.content)
 <details>
     <summary>Expand output:</summary>
 
-```shell
+```text
 Certainly, let's break down the information provided in the weather data for London:
 
 1. **Temperature**: It is currently 23°C (73°F) in London.
@@ -110,7 +110,7 @@ print(output.choices[0].message.content)
 <details>
     <summary>Expand output:</summary>
 
-```
+```text
 Based on the image you provided, it appears to be a nature boardwalk surrounded by lush green grass and a peaceful
 sky filled with clouds. The presence of people indicates that it could be a popular spot for outdoor activities or
 leisurely walks. If you're looking for a similar location in London, you might consider visiting one of the city's
