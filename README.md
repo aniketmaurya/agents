@@ -87,7 +87,7 @@ Answer 2 -->
 
 ## Acknowledgements
 
-Built with PyCharm 🧡. Thanks to JetBrains for supporting this work by providing free license.
+Built with PyCharm 🧡. Thanks to JetBrains for supporting this work by providing free credits.
 
 <img src="https://resources.jetbrains.com/storage/products/company/brand/logos/PyCharm_icon.svg" alt="PyCharm logo.">
 <img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg" alt="JetBrains logo.">
