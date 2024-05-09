@@ -31,7 +31,7 @@ Step 2 is auto checked with Pydantic
 """
 
 import json
-from typing import Any, List
+from typing import Any, List, Union
 
 from langchain_community.tools import StructuredTool
 
@@ -67,7 +67,7 @@ class ToolRegistry:
 
         return result
 
-    def call_tool(self, output: ChatCompletion | dict) -> list[dict[str, str]]:
+    def call_tool(self, output: Union[ChatCompletion, dict]) -> list[dict[str, str]]:
         if isinstance(output, dict):
             output = ChatCompletion(**output)
 
