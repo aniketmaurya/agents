@@ -9,6 +9,6 @@ import sys
 
 logger.remove(0)
 LOGURU_LEVEL = env("LOGURU_LEVEL", str, "INFO")
-logger.start(sys.stderr, level=LOGURU_LEVEL)
+logger.add(sys.stderr, level=LOGURU_LEVEL)
 
 __version__ = "0.0.1"

@@ -6,3 +6,4 @@ pandas
 loguru
 wikipedia
 googlesearch-python
+langchain-cohere

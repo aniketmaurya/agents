@@ -1,4 +1,4 @@
-from typing import List, Optional, Any
+from typing import List, Optional, Any, Dict
 from loguru import logger
 
 from agents.specs import ChatCompletion
@@ -78,5 +78,5 @@ class LlamaCppChatCompletion:
         logger.debug(output)
         return ChatCompletion(**output)
 
-    def run_tool(self, chat_completion: ChatCompletion) -> list[dict[str, Any]]:
+    def run_tool(self, chat_completion: ChatCompletion) -> List[Dict[str, Any]]:
         return self.tool_registry.call_tool(chat_completion)
