@@ -15,6 +15,7 @@ def create_image_inspector(**kwargs):
     chat_handler = MoondreamChatHandler.from_pretrained(
         repo_id="vikhyatk/moondream2",
         filename="*mmproj*",
+        verbose=False,
     )
 
     llm = Llama.from_pretrained(
@@ -78,5 +79,5 @@ class LlamaCppChatCompletion:
         logger.debug(output)
         return ChatCompletion(**output)
 
-    def run_tool(self, chat_completion: ChatCompletion) -> List[Dict[str, Any]]:
-        return self.tool_registry.call_tool(chat_completion)
+    def run_tools(self, chat_completion: ChatCompletion) -> List[Dict[str, Any]]:
+        return self.tool_registry.call_tools(chat_completion)

@@ -14,7 +14,7 @@ def test_registry():
     tool_registry.register_tool(get_current_weather)
     assert tool_registry.get("get_current_weather")
 
-    messages = tool_registry.call_tool(completion_data)
+    messages = tool_registry.call_tools(completion_data)
     assert "FeelsLikeC" in messages[0]["content"]
 
 

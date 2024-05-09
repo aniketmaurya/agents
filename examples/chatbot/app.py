@@ -22,7 +22,7 @@ def llamacpp_chat(message, history):
 
     output = llm.chat_completion(messages)
     if need_tool_use(output):
-        tool_response = llm.run_tool(output)
+        tool_response = llm.run_tools(output)
         updated_messages = messages + tool_response
         messages = updated_messages + [
             {"role": "user", "content": "please answer me, based on the tool results."}
