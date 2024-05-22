@@ -1,13 +1,18 @@
 import gradio as gr
 from agents.llms.llm import LlamaCppChatCompletion
 from agents.tool_executor import need_tool_use
-from agents.tools import get_current_weather, wikipedia_search, google_search
+from agents.tools import (
+    get_current_weather,
+    wikipedia_search,
+    google_search,
+    image_inspector,
+)
 
 llm = LlamaCppChatCompletion.from_default_llm(n_ctx=0)
-llm.bind_tools([get_current_weather, google_search, wikipedia_search])
+llm.bind_tools([get_current_weather, google_search, wikipedia_search, image_inspector])
 
 
-def llamacpp_chat(message, history):
+def llamacpp_chat(message, history, image=None):
     history_langchain_format = [
         {
             "role": "system",
@@ -17,7 +22,12 @@ def llamacpp_chat(message, history):
     for user, ai in history:
         history_langchain_format.append({"role": "user", "content": user})
         history_langchain_format.append({"role": "assistant", "content": ai})
-    history_langchain_format.append({"role": "user", "content": message})
+
+    if image:
+        message += f"\nAttached image filepath: ```{image}```"
+        history_langchain_format.append({"role": "user", "content": message})
+    else:
+        history_langchain_format.append({"role": "user", "content": message})
     messages = history_langchain_format
 
     output = llm.chat_completion(messages)
@@ -34,6 +44,7 @@ def llamacpp_chat(message, history):
 
 gr.ChatInterface(
     llamacpp_chat,
+    additional_inputs=[gr.Image(type="filepath")],
     chatbot=gr.Chatbot(height=300, likeable=True),
     textbox=gr.Textbox(placeholder="Ask me any question", container=False, scale=7),
     title="Agent",
@@ -43,4 +54,4 @@ gr.ChatInterface(
     retry_btn=None,
     undo_btn="Delete Previous",
     clear_btn="Clear",
-).launch()
+).queue().launch(server_name="0.0.0.0")
