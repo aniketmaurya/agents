@@ -10,6 +10,9 @@ from agents.tools import (
     image_inspector,
 )
 from agents.tool_executor import need_tool_use
+import logging
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
 
 
 class AgentAPI(ls.LitAPI):
@@ -23,6 +26,7 @@ class AgentAPI(ls.LitAPI):
         ])
 
     def predict(self, messages):
+        logging.debug(messages[-1])
         output = self.llm.chat_completion(messages)
         if need_tool_use(output):
             tool_results = self.llm.run_tools(output)
