@@ -8,3 +8,5 @@ wikipedia
 googlesearch-python
 langchain-cohere
 transformers
+openai
+cohere
