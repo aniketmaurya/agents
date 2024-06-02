@@ -20,6 +20,12 @@ pip install git+https://github.com/aniketmaurya/agents.git@main
   pip install -e .
 ```
 
+## Supported LLMs
+
+✅ OpenAI
+✅ Cohere Command R and Command R+
+✅ LlamaCPP
+
 ## Usage/Examples
 
 ### Simple tool use with a local or cloud LLM
