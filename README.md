@@ -4,6 +4,11 @@ Build Agentic workflows with function calling, powered by LangChain.
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/aniketmaurya/python-project-template?template=false)
 
+<a target="_blank" href="https://lightning.ai/lightning-ai/studios/introduction-to-ai-agents">
+  <img src="https://pl-bolts-doc-images.s3.us-east-2.amazonaws.com/app-2/studio-badge.svg" alt="Open In Studio"/>
+</a>
+
+
 ## Installation
 
 **Install latest branch:**
