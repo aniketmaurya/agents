@@ -35,7 +35,7 @@ pip install git+https://github.com/aniketmaurya/agents.git@main
 LLM with access to weather API:
 
 ```python
-from agents.llms.llm import LlamaCppChatCompletion
+from agents.llms import LlamaCppChatCompletion
 from agents.tools import get_current_weather, wikipedia_search
 from agents.tool_executor import need_tool_use
 
@@ -94,8 +94,8 @@ pleasant, and there's no precipitation to worry about. It's a great time to be o
 You can build an AI Agent that can see the world with computer vision.
 
 ```python
-from agents.llms.llm import LlamaCppChatCompletion
-from agents.tools import get_current_weather, wikipedia_search, google_search, image_inspector
+from agents.llms import LlamaCppChatCompletion
+from agents.tools import wikipedia_search, google_search, image_inspector
 
 llm = LlamaCppChatCompletion.from_default_llm(n_ctx=0)
 llm.bind_tools([google_search, wikipedia_search, image_inspector])

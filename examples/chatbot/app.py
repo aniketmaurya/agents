@@ -1,5 +1,5 @@
 import gradio as gr
-from agents.llms.llm import LlamaCppChatCompletion
+from agents.llms import LlamaCppChatCompletion
 from agents.tool_executor import need_tool_use
 from agents.tools import (
     get_current_weather,

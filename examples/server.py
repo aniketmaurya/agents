@@ -2,7 +2,7 @@
 # https://github.com/Lightning-AI/LitServe
 import litserve as ls
 
-from agents.llms.llm import LlamaCppChatCompletion
+from agents.llms import LlamaCppChatCompletion
 from agents.tools import (
     get_current_weather,
     wikipedia_search,
