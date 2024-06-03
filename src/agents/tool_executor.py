@@ -66,7 +66,7 @@ class ToolRegistry:
         for oai_tool in self._formatted_tools.values():
             result.append({"type": "function", "function": oai_tool})
 
-        return result
+        return result if result else None
 
     def call_tool(self, tool: ToolCall) -> Any:
         """Call a single tool and return the result."""
