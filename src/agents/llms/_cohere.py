@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 def _format_cohere_to_openai(output: cohere.NonStreamedChatResponse):
     response_meta = output.meta
-    _tool_calls = output.tool_calls
+    _tool_calls = output.tool_calls or []
     tool_calls = []
     for tool in _tool_calls:
         tool = ToolCall(id=tool["id"], type=tool["type"], function=tool["function"])
