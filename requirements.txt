@@ -10,3 +10,4 @@ langchain-cohere
 transformers
 openai
 cohere
+litserve
