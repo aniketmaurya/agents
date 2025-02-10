@@ -2,12 +2,21 @@
 
 Build Agentic workflows with function calling, powered by LangChain.
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/aniketmaurya/python-project-template?template=false)
+#### 🌏  Open in Cloud IDEs
+
+Click any of the buttons below to start a new development environment to demo or contribute to the codebase without having to install anything on your machine:
+
+[![Open in Glitch](https://img.shields.io/badge/Open%20in-Glitch-blue?logo=glitch)](https://glitch.com/edit/#!/import/github/aniketmaurya/python-project-template)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/aniketmaurya/python-project-template)
+[![Edit in Codesandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/aniketmaurya/python-project-template)
+[![Open in Repl.it](https://replit.com/badge/github/withastro/astro)](https://replit.com/github/aniketmaurya/python-project-template)
+[![Open in Codeanywhere](https://codeanywhere.com/img/open-in-codeanywhere-btn.svg)](https://app.codeanywhere.com/#https://github.com/aniketmaurya/python-project-template)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/aniketmaurya/python-project-template)
 
 <a target="_blank" href="https://lightning.ai/lightning-ai/studios/introduction-to-ai-agents">
   <img src="https://pl-bolts-doc-images.s3.us-east-2.amazonaws.com/app-2/studio-badge.svg" alt="Open In Studio"/>
 </a>
-
+<a href="https://app.codeanywhere.com/#https://github.com/aniketmaurya/agents"><img src="https://codeanywhere.com/img/open-in-codeanywhere-btn.svg" alt="Open in Codeanywhere" width="150"></a>
 
 ## Installation
 
