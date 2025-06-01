@@ -22,9 +22,18 @@ AgentForce is a powerful, open-source framework designed for building production
 - 🚀 **Production Ready**: Built with scalability and reliability in mind
 - 📦 **Easy to Extend**: Simple API for adding custom tools and LLM providers
 
+## Project Structure
+
+- `src/agentforce`: Main source code for the agentforce library.
+- `examples/`: Contains practical examples and use-cases of agentforce.
+- `docs/`: Houses the documentation files.
+- `tests/`: Includes all unit and integration tests for the project.
+
 ## 🚀 Quick Start
 
 ### Installation
+
+**Note:** AgentForce requires Python 3.10 or newer.
 
 ```bash
 # Install from PyPI (recommended)
@@ -109,6 +118,14 @@ We welcome contributions of all kinds! Whether it's:
 - 🐛 Bug fixes
 - ✨ New features
 - 🔧 Tool integrations
+
+### Ways to Contribute
+
+Here are some common ways you can contribute:
+- **Reporting Bugs**: If you find a bug, please report it on GitHub Issues.
+- **Suggesting Enhancements**: Have an idea for a new feature or an improvement? Let us know through GitHub Issues.
+- **Submitting Pull Requests**: We welcome PRs for bug fixes, new features, or improvements.
+- **Improving Documentation**: Help us make our documentation clearer and more comprehensive.
 
 Check out our [Contributing Guidelines](https://github.com/gradsflow/agentforce/blob/master/CONTRIBUTING.md) to get started.
 
