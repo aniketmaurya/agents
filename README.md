@@ -53,9 +53,7 @@ llm = LlamaCppChatCompletion.from_default_llm(n_ctx=0)
 llm.bind_tools([get_current_weather])
 
 # Create a simple query
-messages = [
-    {"role": "user", "content": "How is the weather in London today?"}
-]
+messages = [{"role": "user", "content": "How is the weather in London today?"}]
 
 # Get response and handle tool usage
 output = llm.chat_completion(messages)
@@ -63,10 +61,7 @@ output = llm.chat_completion(messages)
 if need_tool_use(output):
     tool_results = llm.run_tools(output)
     updated_messages = messages + tool_results
-    updated_messages.append({
-        "role": "user",
-        "content": "Summarize the weather information."
-    })
+    updated_messages.append({"role": "user", "content": "Summarize the weather information."})
     output = llm.chat_completion(updated_messages)
 
 print(output.choices[0].message.content)
@@ -90,7 +85,7 @@ llm.bind_tools([google_search, wikipedia_search, image_inspector])
 image_url = "https://example.com/image.jpg"
 messages = [
     {"role": "system", "content": "You are a helpful assistant that can analyze images."},
-    {"role": "user", "content": f"What can you tell me about this image? {image_url}"}
+    {"role": "user", "content": f"What can you tell me about this image? {image_url}"},
 ]
 
 output = llm.chat_completion(messages)
